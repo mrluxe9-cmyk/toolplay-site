@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/</loc><priority>1.0</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/about.html</loc><priority>0.5</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/contact.html</loc><priority>0.4</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/blog.html</loc><priority>0.4</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/privacy-policy.html</loc><priority>0.2</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/terms.html</loc><priority>0.2</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/disclaimer.html</loc><priority>0.2</priority></url>
+
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/age-calculator.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/bmi-calculator.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/percentage-calculator.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/word-counter.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/password-generator.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/tools/qr-generator.html</loc><priority>0.8</priority></url>
+
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/games/tic-tac-toe.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/games/snake.html</loc><priority>0.8</priority></url>
+  <url><loc>https://mrluxe9-cmyk.github.io/toolplay-site/games/2048.html</loc><priority>0.8</priority></url>
+</urlset>

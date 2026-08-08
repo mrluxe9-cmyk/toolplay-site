@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe — Play Free Online | ToolPlay</title>
+<meta name="description" content="Play Tic Tac Toe free online. Classic 2-player X and O game, no download needed.">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/games/tic-tac-toe.html">
+<meta name="theme-color" content="#7C3AED">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Game","name":"Tic Tac Toe","genre":"Puzzle","gamePlatform":"Web Browser"}
+</script>
+<link rel="manifest" href="../manifest.json">
+</head>
+<body>
+<div id="tp-header"></div>
+<main>
+  <div class="container tool-page-head">
+    <span class="badge game">Game</span>
+    <h1>Tic Tac Toe</h1>
+    <p style="color:var(--text-muted)">Classic 2-player X and O — play on one device, take turns.</p>
+  </div>
+
+  <div class="container">
+    <div class="game-shell">
+      <div class="game-hud">
+        <div class="game-scores">
+          <div class="chip">X wins: <span id="score-x">0</span></div>
+          <div class="chip">O wins: <span id="score-o">0</span></div>
+          <div class="chip">Draws: <span id="score-d">0</span></div>
+        </div>
+        <div class="game-controls">
+          <button class="btn btn-outline btn-sm" onclick="resetBoard()">Restart</button>
+        </div>
+      </div>
+      <div class="game-stage" style="min-height:340px">
+        <div id="ttt-board"></div>
+        <div class="game-overlay hidden" id="ttt-overlay">
+          <h2 id="ttt-overlay-text"></h2>
+          <button class="btn btn-primary" onclick="resetBoard()">Play Again</button>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--text-muted);margin-top:10px" id="turn-indicator">Turn: X</p>
+
+      <div class="how-to-play">
+        <h3>How to play</h3>
+        <ul>
+          <li>Players take turns placing X or O on the 3×3 grid.</li>
+          <li>First to get three in a row — horizontally, vertically, or diagonally — wins.</li>
+          <li>If all 9 squares fill with no winner, it's a draw.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ad-slot rect">Ad space</div>
+  </div>
+</main>
+<div id="tp-footer"></div>
+<div id="tp-bottom-nav"></div>
+
+<script>window.TP_ROOT='../';window.TP_ACTIVE='games';</script>
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  tpTrackRecent('tic-tac-toe');
+  const SCORE_KEY = 'tp_score_ttt';
+  let board = Array(9).fill(null);
+  let turn = 'X';
+  let gameOver = false;
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function loadScores(){
+    try { return JSON.parse(localStorage.getItem(SCORE_KEY)) || {x:0,o:0,d:0}; }
+    catch(e){ return {x:0,o:0,d:0}; }
+  }
+  function saveScores(s){ localStorage.setItem(SCORE_KEY, JSON.stringify(s)); }
+  function renderScores(){
+    const s = loadScores();
+    document.getElementById('score-x').textContent = s.x;
+    document.getElementById('score-o').textContent = s.o;
+    document.getElementById('score-d').textContent = s.d;
+  }
+
+  function renderBoard(){
+    const el = document.getElementById('ttt-board');
+    el.innerHTML = board.map((v,i) => `<div class="ttt-cell" data-i="${i}" onclick="playCell(${i})">${v||''}</div>`).join('');
+  }
+
+  function checkWinner(){
+    for (const [a,b,c] of WINS){
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
+    }
+    return board.every(Boolean) ? 'draw' : null;
+  }
+
+  function playCell(i){
+    if (gameOver || board[i]) return;
+    board[i] = turn;
+    renderBoard();
+    const result = checkWinner();
+    if (result){
+      gameOver = true;
+      const s = loadScores();
+      if (result === 'draw'){ s.d++; showOverlay("It's a draw!"); }
+      else { s[result.toLowerCase()]++; showOverlay(`${result} wins!`); }
+      saveScores(s);
+      renderScores();
+      tpTrack('game_over', { game_name: 'tic-tac-toe', result: result });
+      return;
+    }
+    turn = turn === 'X' ? 'O' : 'X';
+    document.getElementById('turn-indicator').textContent = `Turn: ${turn}`;
+  }
+
+  function showOverlay(text){
+    document.getElementById('ttt-overlay-text').textContent = text;
+    document.getElementById('ttt-overlay').classList.remove('hidden');
+  }
+
+  function resetBoard(){
+    board = Array(9).fill(null);
+    turn = 'X';
+    gameOver = false;
+    document.getElementById('ttt-overlay').classList.add('hidden');
+    document.getElementById('turn-indicator').textContent = 'Turn: X';
+    renderBoard();
+    tpTrack('game_restart', { game_name: 'tic-tac-toe' });
+  }
+
+  renderScores();
+  resetBoard();
+</script>
+</body>
+</html>
