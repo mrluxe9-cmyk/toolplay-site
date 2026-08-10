@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Color Converter | ToolPlay</title><meta name="description" content="Convert HEX colors to RGB."><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:20px 14px}.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px #00000012}
+h1{margin:0 0 8px}.sub{color:#667085}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select,textarea,button{width:100%;padding:13px;border-radius:12px;font-size:16px}input,select,textarea{border:1px solid #d6ddea}button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:700}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.7;font-weight:650}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><section class="card">
+<h1>Color Converter</h1><p class="sub">Convert HEX colors to RGB.</p><input id="hex" value="#6d35e8"><button onclick="go()">Convert</button><div id="out" class="result"></div></section></main><script>function go(){let h=hex.value.replace('#','');if(h.length!==6){out.textContent='Use 6-digit HEX';return}let r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);out.textContent=`RGB(${r}, ${g}, ${b})`}</script></body></html>

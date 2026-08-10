@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI Calculator — Body Mass Index | ToolPlay</title>
+<meta name="description" content="Free BMI calculator. Enter your height and weight to instantly check your Body Mass Index and category.">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/tools/bmi-calculator.html">
+<meta name="theme-color" content="#2563EB">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="manifest" href="../manifest.json">
+</head>
+<body>
+<div id="tp-header"></div>
+<main>
+  <div class="container tool-page-head">
+    <span class="badge tool">Calculators</span>
+    <h1>BMI Calculator</h1>
+    <p style="color:var(--text-muted)">Check your Body Mass Index instantly.</p>
+  </div>
+
+  <div class="container">
+    <div class="tool-card">
+      <div class="field-row">
+        <div class="field">
+          <label for="unit">Units</label>
+          <select id="unit" onchange="toggleUnits()">
+            <option value="metric">Metric (cm / kg)</option>
+            <option value="imperial">Imperial (ft-in / lb)</option>
+          </select>
+        </div>
+      </div>
+      <div id="metric-fields" class="field-row">
+        <div class="field"><label for="height-cm">Height (cm)</label><input type="number" id="height-cm" value="170"></div>
+        <div class="field"><label for="weight-kg">Weight (kg)</label><input type="number" id="weight-kg" value="65"></div>
+      </div>
+      <div id="imperial-fields" class="field-row" style="display:none">
+        <div class="field"><label for="height-ft">Height (ft)</label><input type="number" id="height-ft" value="5"></div>
+        <div class="field"><label for="height-in">Height (in)</label><input type="number" id="height-in" value="7"></div>
+        <div class="field"><label for="weight-lb">Weight (lb)</label><input type="number" id="weight-lb" value="143"></div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="calcBmi()">Calculate BMI</button>
+      <div class="result-box" id="result" style="display:none">
+        <div class="big" id="result-main"></div>
+        <div class="row"><span>Category</span><span id="r-category"></span></div>
+        <div class="row"><span>Healthy weight range</span><span id="r-range"></span></div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>What is BMI?</h2>
+      <p style="color:var(--text-muted)">Body Mass Index (BMI) is a simple measure that uses your height and weight to estimate whether you're in an underweight, healthy, overweight or obese range.</p>
+      <h2>How it's calculated</h2>
+      <p style="color:var(--text-muted)">BMI = weight (kg) ÷ height (m)². The result is compared against the standard World Health Organization ranges.</p>
+      <h2>FAQ</h2>
+      <details class="faq-item"><summary>Is BMI accurate for everyone?</summary><p>BMI is a general screening tool and doesn't account for muscle mass, bone density, or body composition — it's a starting point, not a diagnosis.</p></details>
+    </div>
+    <div class="ad-slot rect">Ad space</div>
+  </div>
+</main>
+<div id="tp-footer"></div>
+<div id="tp-bottom-nav"></div>
+
+<script>window.TP_ROOT='../';window.TP_ACTIVE='tools';</script>
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  tpTrackRecent('bmi-calculator');
+  function toggleUnits(){
+    const isMetric = document.getElementById('unit').value === 'metric';
+    document.getElementById('metric-fields').style.display = isMetric ? 'flex' : 'none';
+    document.getElementById('imperial-fields').style.display = isMetric ? 'none' : 'flex';
+  }
+  function categoryFor(bmi){
+    if (bmi < 18.5) return 'Underweight';
+    if (bmi < 25) return 'Healthy weight';
+    if (bmi < 30) return 'Overweight';
+    return 'Obese';
+  }
+  function calcBmi(){
+    const isMetric = document.getElementById('unit').value === 'metric';
+    let heightM, weightKg;
+    if (isMetric){
+      heightM = (parseFloat(document.getElementById('height-cm').value) || 0) / 100;
+      weightKg = parseFloat(document.getElementById('weight-kg').value) || 0;
+    } else {
+      const ft = parseFloat(document.getElementById('height-ft').value) || 0;
+      const inch = parseFloat(document.getElementById('height-in').value) || 0;
+      heightM = ((ft * 12) + inch) * 0.0254;
+      weightKg = (parseFloat(document.getElementById('weight-lb').value) || 0) * 0.453592;
+    }
+    if (heightM <= 0 || weightKg <= 0){ tpToast('Please enter valid height and weight'); return; }
+    const bmi = weightKg / (heightM * heightM);
+    const lowKg = 18.5 * heightM * heightM;
+    const highKg = 24.9 * heightM * heightM;
+    const toDisplay = isMetric ? (kg => kg.toFixed(1) + ' kg') : (kg => (kg / 0.453592).toFixed(1) + ' lb');
+
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result-main').textContent = bmi.toFixed(1);
+    document.getElementById('r-category').textContent = categoryFor(bmi);
+    document.getElementById('r-range').textContent = `${toDisplay(lowKg)} – ${toDisplay(highKg)}`;
+    tpTrack('tool_complete', { tool_name: 'bmi-calculator' });
+  }
+</script>
+</body>
+</html>

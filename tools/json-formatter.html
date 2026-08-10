@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JSON Formatter | ToolPlay</title>
+<meta name="description" content="Format, validate and beautify JSON online.">
+<style>
+body{font-family:Arial;background:#f5f7fb;margin:0;padding:25px;color:#172033}
+.card{max-width:700px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}
+textarea,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}
+textarea{min-height:250px;border:1px solid #d8deea;font-family:monospace}
+button{border:0;background:#6d35e8;color:#fff;font-weight:bold}
+#out{margin-top:18px;padding:15px;border-radius:12px;background:#f0ebff;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🧩 JSON Formatter</h1>
+<p>Format and validate JSON instantly in your browser.</p>
+<textarea id="json" placeholder='{"name":"ToolPlay","tools":50}'></textarea>
+<button onclick="formatJSON()">Format JSON</button>
+<button onclick="minifyJSON()">Minify JSON</button>
+<div id="out">Result will appear here.</div>
+</div>
+
+<script>
+function formatJSON(){
+ try{
+   const obj=JSON.parse(json.value);
+   out.textContent=JSON.stringify(obj,null,2);
+ }catch(e){
+   out.textContent="Invalid JSON: "+e.message;
+ }
+}
+
+function minifyJSON(){
+ try{
+   const obj=JSON.parse(json.value);
+   out.textContent=JSON.stringify(obj);
+ }catch(e){
+   out.textContent="Invalid JSON: "+e.message;
+ }
+}
+</script>
+</body>
+</html>

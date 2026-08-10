@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Image Converter | ToolPlay</title>
+<meta name="description" content="Convert images to JPG, PNG or WebP in your browser.">
+<style>body{font-family:Arial;background:#f5f7fb;padding:25px;color:#172033}.card{max-width:600px;margin:auto;background:white;padding:25px;border-radius:20px}input,select,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box}button{background:#6d35e8;color:white;border:0;border-radius:12px;font-weight:bold}#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px}</style>
+</head><body><div class="card">
+<h1>🖼️ Image Converter</h1><input id="file" type="file" accept="image/*">
+<select id="format"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select>
+<button onclick="convert()">Convert</button><div id="out">Select an image.</div>
+</div>
+<script>
+function convert(){let f=file.files[0];if(!f){out.textContent='Select an image.';return}let im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{let c=document.createElement('canvas');c.width=im.width;c.height=im.height;c.getContext('2d').drawImage(im,0,0);c.toBlob(b=>{let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='converted.'+(format.value==='image/png'?'png':format.value==='image/webp'?'webp':'jpg');a.textContent='Download converted image';out.replaceChildren(a)},format.value,.9)};im.src=u}
+</script></body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Currency Converter | ToolPlay</title>
+<meta name="description" content="Convert currencies with a simple calculator.">
+<style>
+body{font-family:Arial;background:#f5f7fb;margin:0;padding:25px;color:#172033}
+.card{max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}
+input,select,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}
+button{border:0;background:#6d35e8;color:#fff;font-weight:bold}
+#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;font-size:20px}
+small{color:#667085}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>💱 Currency Converter</h1>
+<p>Convert between common currencies.</p>
+
+<input id="amount" type="number" value="1" placeholder="Amount">
+
+<select id="from">
+<option>USD</option>
+<option>INR</option>
+<option>EUR</option>
+<option>GBP</option>
+<option>JPY</option>
+<option>AED</option>
+</select>
+
+<select id="to">
+<option>INR</option>
+<option>USD</option>
+<option>EUR</option>
+<option>GBP</option>
+<option>JPY</option>
+<option>AED</option>
+</select>
+
+<button onclick="convert()">Convert</button>
+
+<div id="out">Enter an amount.</div>
+<small>Rates shown here are example reference rates, not live exchange rates.</small>
+</div>
+
+<script>
+const rates={
+USD:1,
+INR:83.5,
+EUR:0.92,
+GBP:0.79,
+JPY:150,
+AED:3.6725
+};
+
+function convert(){
+ const amount=Number(document.getElementById('amount').value);
+ const from=document.getElementById('from').value;
+ const to=document.getElementById('to').value;
+
+ if(!Number.isFinite(amount)){
+   out.textContent='Please enter a valid amount.';
+   return;
+ }
+
+ const result=amount*rates[to]/rates[from];
+
+ out.textContent=
+ `${amount} ${from} ≈ ${result.toFixed(2)} ${to}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator | ToolPlay</title>
+<meta name="description" content="Free percentage calculator. Find what percent one number is of another, calculate percentage increases/decreases, and more.">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/tools/percentage-calculator.html">
+<meta name="theme-color" content="#2563EB">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="manifest" href="../manifest.json">
+</head>
+<body>
+<div id="tp-header"></div>
+<main>
+  <div class="container tool-page-head">
+    <span class="badge tool">Calculators</span>
+    <h1>Percentage Calculator</h1>
+    <p style="color:var(--text-muted)">Calculate percentages, increases and decreases.</p>
+  </div>
+
+  <div class="container">
+    <div class="tool-card">
+      <div class="field-row">
+        <div class="field">
+          <label for="mode">Calculation type</label>
+          <select id="mode" onchange="renderMode()">
+            <option value="basic">What is X% of Y?</option>
+            <option value="isWhat">X is what % of Y?</option>
+            <option value="change">% increase / decrease from X to Y</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row" id="mode-fields"></div>
+      <button class="btn btn-primary btn-block" onclick="calcPct()">Calculate</button>
+      <div class="result-box" id="result" style="display:none">
+        <div class="big" id="result-main"></div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>What is a percentage calculator?</h2>
+      <p style="color:var(--text-muted)">A percentage calculator handles the three most common percent problems: finding a share of a number, expressing one number as a percentage of another, and finding the percent change between two values.</p>
+      <h2>Example</h2>
+      <p style="color:var(--text-muted)">20% of 150 is 30. 30 is 20% of 150. Going from 150 to 180 is a 20% increase.</p>
+    </div>
+    <div class="ad-slot rect">Ad space</div>
+  </div>
+</main>
+<div id="tp-footer"></div>
+<div id="tp-bottom-nav"></div>
+
+<script>window.TP_ROOT='../';window.TP_ACTIVE='tools';</script>
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  tpTrackRecent('percentage-calculator');
+  const modeFieldsHTML = {
+    basic: `<div class="field">What is <input type="number" id="p1" value="20"> %</div>
+            <div class="field">of <input type="number" id="p2" value="150"></div>`,
+    isWhat: `<div class="field"><input type="number" id="p1" value="30"></div>
+             <div class="field">is what % of <input type="number" id="p2" value="150"></div>`,
+    change: `<div class="field">From <input type="number" id="p1" value="150"></div>
+             <div class="field">to <input type="number" id="p2" value="180"></div>`
+  };
+  function renderMode(){
+    const mode = document.getElementById('mode').value;
+    document.getElementById('mode-fields').innerHTML = modeFieldsHTML[mode];
+    document.getElementById('result').style.display = 'none';
+  }
+  function calcPct(){
+    const mode = document.getElementById('mode').value;
+    const a = parseFloat(document.getElementById('p1').value);
+    const b = parseFloat(document.getElementById('p2').value);
+    if (isNaN(a) || isNaN(b)){ tpToast('Please enter both numbers'); return; }
+    let text;
+    if (mode === 'basic'){
+      text = ((a/100)*b).toFixed(2) + ` — that's ${a}% of ${b}`;
+    } else if (mode === 'isWhat'){
+      if (b === 0){ tpToast('Second number can\u2019t be zero'); return; }
+      text = ((a/b)*100).toFixed(2) + `% — ${a} is this share of ${b}`;
+    } else {
+      if (a === 0){ tpToast('Starting number can\u2019t be zero'); return; }
+      const diff = ((b-a)/a)*100;
+      text = (diff >= 0 ? '+' : '') + diff.toFixed(2) + `% — change from ${a} to ${b}`;
+    }
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result-main').textContent = text;
+    tpTrack('tool_complete', { tool_name: 'percentage-calculator' });
+  }
+  renderMode();
+</script>
+</body>
+</html>

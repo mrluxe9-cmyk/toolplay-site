@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Discount Calculator - Calculate Sale Price & Savings | ToolPlay</title>
+<meta name="description" content="Free online Discount Calculator. Calculate discount amount, final sale price and total savings quickly and easily.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/tools/discount-calculator.html">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#111827;
+}
+.container{
+  max-width:700px;
+  margin:40px auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+h1{text-align:center;margin-top:0}
+.subtitle{
+  text-align:center;
+  color:#6b7280;
+  margin-bottom:25px;
+}
+label{
+  display:block;
+  margin:15px 0 7px;
+  font-weight:600;
+}
+input{
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:16px;
+}
+button{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#111827;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+}
+button:active{transform:scale(.99)}
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:12px;
+  background:#f3f4f6;
+}
+.result p{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #ddd;
+  padding:10px 0;
+}
+.result p:last-child{border:0}
+.faq{margin-top:30px}
+.faq h2{font-size:22px}
+.faq h3{font-size:17px;margin-bottom:5px}
+.faq p{color:#4b5563;line-height:1.6}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<h1>Discount Calculator</h1>
+
+<p class="subtitle">
+Calculate discount amount, final price and total savings instantly.
+</p>
+
+<label for="price">Original Price</label>
+<input type="number" id="price" placeholder="Example: 1000">
+
+<label for="discount">Discount Percentage (%)</label>
+<input type="number" id="discount" placeholder="Example: 20">
+
+<button onclick="calculateDiscount()">Calculate Discount</button>
+
+<div class="result">
+<p><span>Original Price</span><strong id="original">₹0.00</strong></p>
+<p><span>Discount Amount</span><strong id="saving">₹0.00</strong></p>
+<p><span>Final Price</span><strong id="final">₹0.00</strong></p>
+</div>
+
+<div class="faq">
+
+<h2>Discount Calculator FAQ</h2>
+
+<h3>How is the discount calculated?</h3>
+<p>
+The discount amount is calculated by multiplying the original price
+by the discount percentage and dividing by 100.
+</p>
+
+<h3>What is the final price?</h3>
+<p>
+The final price is the original price minus the discount amount.
+</p>
+
+<h3>Is this Discount Calculator free?</h3>
+<p>
+Yes. ToolPlay's Discount Calculator is free to use online.
+</p>
+
+</div>
+
+</div>
+</div>
+
+<script>
+function calculateDiscount(){
+
+  const price = parseFloat(document.getElementById("price").value);
+  const discount = parseFloat(document.getElementById("discount").value);
+
+  if(isNaN(price) || isNaN(discount) || price < 0 || discount < 0){
+    alert("Please enter valid values.");
+    return;
+  }
+
+  const saving = price * discount / 100;
+  const finalPrice = price - saving;
+
+  document.getElementById("original").textContent =
+    "₹" + price.toFixed(2);
+
+  document.getElementById("saving").textContent =
+    "₹" + saving.toFixed(2);
+
+  document.getElementById("final").textContent =
+    "₹" + finalPrice.toFixed(2);
+}
+</script>
+
+</body>
+</html>

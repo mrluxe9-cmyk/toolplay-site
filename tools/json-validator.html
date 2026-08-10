@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JSON Validator | ToolPlay</title>
+<meta name="description" content="Validate JSON instantly in your browser.">
+<style>body{font-family:Arial;background:#f5f7fb;padding:25px;color:#172033}.card{max-width:700px;margin:auto;background:white;padding:25px;border-radius:20px}textarea,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box}button{background:#6d35e8;color:white;border:0;border-radius:12px;font-weight:bold}#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px}</style>
+</head><body><div class="card">
+<h1>✅ JSON Validator</h1>
+<textarea id="text" rows="10" placeholder='{"name":"ToolPlay"}'></textarea>
+<button onclick="check()">Validate JSON</button><div id="out">Enter JSON.</div>
+</div>
+<script>function check(){try{JSON.parse(text.value);out.textContent='✓ Valid JSON'}catch(e){out.textContent='✗ Invalid JSON: '+e.message}}</script>
+</body></html>

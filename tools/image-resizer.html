@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Image Resizer | ToolPlay</title><meta name="description" content="Resize an image locally in your browser."><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:20px 14px}.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px #00000012}
+h1{margin:0 0 8px}.sub{color:#667085}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select,textarea,button{width:100%;padding:13px;border-radius:12px;font-size:16px}input,select,textarea{border:1px solid #d6ddea}button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:700}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.7;font-weight:650}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><section class="card">
+<h1>Image Resizer</h1><p class="sub">Resize an image locally in your browser.</p><input id="file" type="file" accept="image/*"><div class="grid"><input id="w" type="number" placeholder="Width"><input id="h" type="number" placeholder="Height"></div><button onclick="go()">Resize</button><div id="out" class="result"></div></section></main><script>function go(){let f=file.files[0];if(!f)return;let im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{let c=document.createElement('canvas');c.width=+w.value||im.width;c.height=+h.value||im.height;c.getContext('2d').drawImage(im,0,0,c.width,c.height);c.toBlob(b=>{let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='resized.jpg';a.textContent='Download resized image';out.replaceChildren(a)},'image/jpeg',.9)};im.src=u}</script></body></html>

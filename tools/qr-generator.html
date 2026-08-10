@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator | ToolPlay</title>
+<meta name="description" content="Free QR code generator. Turn any link or text into a downloadable, scannable QR code instantly.">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/tools/qr-generator.html">
+<meta name="theme-color" content="#2563EB">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="manifest" href="../manifest.json">
+</head>
+<body>
+<div id="tp-header"></div>
+<main>
+  <div class="container tool-page-head">
+    <span class="badge tool">Utility</span>
+    <h1>QR Code Generator</h1>
+    <p style="color:var(--text-muted)">Turn any text or link into a scannable QR code.</p>
+  </div>
+
+  <div class="container">
+    <div class="tool-card">
+      <div class="field">
+        <label for="qr-text">Text or URL</label>
+        <input type="text" id="qr-text" placeholder="https://example.com" value="https://mrluxe9-cmyk.github.io/toolplay-site/" oninput="genQr()">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="qr-size">Size</label>
+          <select id="qr-size" onchange="genQr()">
+            <option value="200">Small (200px)</option>
+            <option value="300" selected>Medium (300px)</option>
+            <option value="400">Large (400px)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;padding:20px 0">
+        <div id="qr-canvas"></div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="downloadQr()">Download PNG</button>
+    </div>
+
+    <div class="content-block">
+      <h2>What can I put in a QR code?</h2>
+      <p style="color:var(--text-muted)">Any text works — website links, Wi-Fi details, contact info, or plain messages. The code is generated instantly in your browser.</p>
+    </div>
+    <div class="ad-slot rect">Ad space</div>
+  </div>
+</main>
+<div id="tp-footer"></div>
+<div id="tp-bottom-nav"></div>
+
+<script>window.TP_ROOT='../';window.TP_ACTIVE='tools';</script>
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  tpTrackRecent('qr-generator');
+  let qrInstance = null;
+  function genQr(){
+    const text = document.getElementById('qr-text').value || ' ';
+    const size = parseInt(document.getElementById('qr-size').value, 10);
+    const container = document.getElementById('qr-canvas');
+    container.innerHTML = '';
+    if (typeof QRCode === 'undefined'){
+      container.innerHTML = '<p class="empty-note">QR library failed to load — check your connection.</p>';
+      return;
+    }
+    qrInstance = new QRCode(container, {
+      text: text, width: size, height: size,
+      colorDark: '#0F172A', colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    tpTrack('tool_complete', { tool_name: 'qr-generator' });
+  }
+  function downloadQr(){
+    const img = document.querySelector('#qr-canvas img') || document.querySelector('#qr-canvas canvas');
+    if (!img){ tpToast('Generate a code first'); return; }
+    const link = document.createElement('a');
+    link.download = 'qrcode.png';
+    link.href = img.src || img.toDataURL('image/png');
+    link.click();
+    tpTrack('download', { item: 'qr-code' });
+  }
+  window.addEventListener('load', genQr);
+</script>
+</body>
+</html>

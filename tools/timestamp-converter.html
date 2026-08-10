@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Timestamp Converter | ToolPlay</title>
+<meta name="description" content="Convert Unix timestamps to readable dates and dates to Unix timestamps.">
+<style>
+body{font-family:Arial;background:#f5f7fb;margin:0;padding:25px;color:#172033}
+.card{max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}
+input,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}
+button{border:0;background:#6d35e8;color:#fff;font-weight:bold}
+#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>⏱️ Timestamp Converter</h1>
+<p>Convert Unix timestamps and dates.</p>
+
+<input id="timestamp" type="number" placeholder="Unix timestamp">
+<button onclick="toDate()">Timestamp → Date</button>
+
+<input id="date" type="datetime-local">
+<button onclick="toTimestamp()">Date → Timestamp</button>
+
+<div id="out">Result will appear here.</div>
+</div>
+
+<script>
+function toDate(){
+ const v=Number(timestamp.value);
+ if(!Number.isFinite(v)){out.textContent='Enter a valid timestamp.';return}
+ const d=new Date(v<10000000000?v*1000:v);
+ out.textContent=d.toLocaleString();
+}
+
+function toTimestamp(){
+ const v=date.value;
+ if(!v){out.textContent='Select a date and time.';return}
+ const d=new Date(v);
+ out.textContent='Unix timestamp: '+Math.floor(d.getTime()/1000);
+}
+</script>
+</body>
+</html>

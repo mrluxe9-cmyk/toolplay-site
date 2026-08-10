@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scientific Calculator | ToolPlay</title><meta name="description" content="Perform common scientific calculations."><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:20px 14px}.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px #00000012}
+h1{margin:0 0 8px}.sub{color:#667085}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select,textarea,button{width:100%;padding:13px;border-radius:12px;font-size:16px}input,select,textarea{border:1px solid #d6ddea}button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:700}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.7;font-weight:650}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><section class="card">
+<h1>Scientific Calculator</h1><p class="sub">Perform common scientific calculations.</p><input id="x" type="number" placeholder="Number"><select id="op"><option value="sqrt">Square root</option><option value="square">Square</option><option value="cube">Cube</option><option value="sin">Sin (degrees)</option><option value="cos">Cos (degrees)</option><option value="tan">Tan (degrees)</option><option value="log">Log10</option></select><button onclick="go()">Calculate</button><div id="out" class="result"></div></section></main><script>function go(){let n=+x.value,o=op.value,v=o==='sqrt'?Math.sqrt(n):o==='square'?n*n:o==='cube'?n*n*n:o==='sin'?Math.sin(n*Math.PI/180):o==='cos'?Math.cos(n*Math.PI/180):o==='tan'?Math.tan(n*Math.PI/180):Math.log10(n);out.textContent=`Result: ${v}`}</script></body></html>

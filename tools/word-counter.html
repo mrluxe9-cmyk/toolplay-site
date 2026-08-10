@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Counter — Count Words &amp; Characters | ToolPlay</title>
+<meta name="description" content="Free word counter. Count words, characters, sentences, paragraphs and estimated reading time live as you type.">
+<link rel="canonical" href="https://mrluxe9-cmyk.github.io/toolplay-site/tools/word-counter.html">
+<meta name="theme-color" content="#2563EB">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="manifest" href="../manifest.json">
+</head>
+<body>
+<div id="tp-header"></div>
+<main>
+  <div class="container tool-page-head">
+    <span class="badge tool">Text Tools</span>
+    <h1>Word Counter</h1>
+    <p style="color:var(--text-muted)">Count words, characters, sentences and reading time — updates live as you type.</p>
+  </div>
+
+  <div class="container">
+    <div class="tool-card">
+      <div class="field">
+        <label for="text-input">Your text</label>
+        <textarea id="text-input" placeholder="Paste or type your text here…" oninput="analyzeText()"></textarea>
+      </div>
+      <div class="stat-row">
+        <div class="stat-chip">Words: <b id="s-words">0</b></div>
+        <div class="stat-chip">Characters: <b id="s-chars">0</b></div>
+        <div class="stat-chip">Characters (no spaces): <b id="s-chars-ns">0</b></div>
+        <div class="stat-chip">Sentences: <b id="s-sentences">0</b></div>
+        <div class="stat-chip">Paragraphs: <b id="s-paragraphs">0</b></div>
+        <div class="stat-chip">Reading time: <b id="s-reading">0 sec</b></div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h2>What is a word counter?</h2>
+      <p style="color:var(--text-muted)">A word counter analyzes text as you type, giving instant counts of words, characters, sentences and paragraphs — useful for essays, social posts, and anywhere with a length limit.</p>
+      <h2>How reading time is calculated</h2>
+      <p style="color:var(--text-muted)">Reading time is estimated at 200 words per minute, a common average adult silent reading speed.</p>
+    </div>
+    <div class="ad-slot rect">Ad space</div>
+  </div>
+</main>
+<div id="tp-footer"></div>
+<div id="tp-bottom-nav"></div>
+
+<script>window.TP_ROOT='../';window.TP_ACTIVE='tools';</script>
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  tpTrackRecent('word-counter');
+  let completedTracked = false;
+  function analyzeText(){
+    const text = document.getElementById('text-input').value;
+    const trimmed = text.trim();
+    const words = trimmed ? trimmed.split(/\s+/).length : 0;
+    const chars = text.length;
+    const charsNoSpaces = text.replace(/\s/g, '').length;
+    const sentences = trimmed ? (trimmed.match(/[^.!?]+[.!?]+/g) || (trimmed ? [trimmed] : [])).length : 0;
+    const paragraphs = trimmed ? trimmed.split(/\n+/).filter(p => p.trim().length).length : 0;
+    const readingSec = Math.round((words / 200) * 60);
+
+    document.getElementById('s-words').textContent = words;
+    document.getElementById('s-chars').textContent = chars;
+    document.getElementById('s-chars-ns').textContent = charsNoSpaces;
+    document.getElementById('s-sentences').textContent = sentences;
+    document.getElementById('s-paragraphs').textContent = paragraphs;
+    document.getElementById('s-reading').textContent = readingSec < 60 ? `${readingSec} sec` : `${Math.round(readingSec/60)} min`;
+
+    if (words > 0 && !completedTracked){
+      completedTracked = true;
+      tpTrack('tool_complete', { tool_name: 'word-counter' });
+    }
+  }
+</script>
+</body>
+</html>

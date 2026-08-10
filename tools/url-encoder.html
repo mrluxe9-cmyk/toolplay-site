@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>URL Encoder Decoder | ToolPlay</title><meta name="description" content="Encode or decode URL text."><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:20px 14px}.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 8px 28px #00000012}
+h1{margin:0 0 8px}.sub{color:#667085}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select,textarea,button{width:100%;padding:13px;border-radius:12px;font-size:16px}input,select,textarea{border:1px solid #d6ddea}button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:700}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.7;font-weight:650}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><main class="wrap"><section class="card">
+<h1>URL Encoder Decoder</h1><p class="sub">Encode or decode URL text.</p><textarea id="text" rows="8"></textarea><div class="grid"><button onclick="enc()">Encode</button><button onclick="dec()">Decode</button></div></section></main><script>function enc(){text.value=encodeURIComponent(text.value)}function dec(){try{text.value=decodeURIComponent(text.value)}catch(e){alert('Invalid encoding')}}</script></body></html>

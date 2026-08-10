@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unit Converter | ToolPlay</title>
+<meta name="description" content="Convert length, weight and temperature units.">
+<style>
+body{font-family:Arial;background:#f5f7fb;margin:0;padding:25px;color:#172033}
+.card{max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}
+input,select,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}
+button{border:0;background:#6d35e8;color:#fff;font-weight:bold}
+#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;font-size:19px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>📏 Unit Converter</h1>
+<p>Convert length, weight and temperature units.</p>
+
+<select id="category" onchange="loadUnits()">
+<option value="length">Length</option>
+<option value="weight">Weight</option>
+<option value="temperature">Temperature</option>
+</select>
+
+<input id="value" type="number" value="1" placeholder="Value">
+
+<select id="from"></select>
+<select id="to"></select>
+
+<button onclick="convert()">Convert</button>
+<div id="out">Result will appear here.</div>
+</div>
+
+<script>
+const units={
+length:{
+Meter:1,Kilometer:1000,Centimeter:.01,Millimeter:.001,
+Mile:1609.344,Foot:.3048,Inch:.0254
+},
+weight:{
+Kilogram:1,Gram:.001,Milligram:.000001,
+Pound:.45359237,Ounce:.0283495231
+},
+temperature:{
+Celsius:0,Fahrenheit:0,Kelvin:0
+}
+};
+
+function loadUnits(){
+ const list=Object.keys(units[category.value]);
+ from.innerHTML=list.map(x=>`<option>${x}</option>`).join('');
+ to.innerHTML=list.map(x=>`<option>${x}</option>`).join('');
+ if(list.length>1)to.selectedIndex=1;
+}
+
+function convert(){
+ const v=Number(value.value),a=from.value,b=to.value,c=category.value;
+ if(!Number.isFinite(v)){out.textContent='Enter a valid value.';return}
+
+ let r;
+
+ if(c==='temperature'){
+   let cel=a==='Celsius'?v:a==='Fahrenheit'?(v-32)*5/9:v-273.15;
+   r=b==='Celsius'?cel:b==='Fahrenheit'?cel*9/5+32:cel+273.15;
+ }else{
+   r=v*units[c][a]/units[c][b];
+ }
+
+ out.textContent=`${v} ${a} = ${r.toLocaleString(undefined,{maximumFractionDigits:8})} ${b}`;
+}
+
+loadUnits();
+</script>
+</body>
+</html>

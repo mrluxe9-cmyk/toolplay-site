@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Time Zone Converter | ToolPlay</title>
+<meta name="description" content="Convert time between common time zones.">
+<style>
+body{font-family:Arial;background:#f5f7fb;margin:0;padding:25px;color:#172033}
+.card{max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}
+input,select,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}
+button{border:0;background:#6d35e8;color:#fff;font-weight:bold}
+#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🌍 Time Zone Converter</h1>
+<p>Convert a date and time between common time zones.</p>
+
+<input id="dt" type="datetime-local">
+
+<select id="from">
+<option value="UTC">UTC</option>
+<option value="Asia/Kolkata">India (IST)</option>
+<option value="Europe/London">London</option>
+<option value="America/New_York">New York</option>
+<option value="Asia/Dubai">Dubai</option>
+<option value="Asia/Singapore">Singapore</option>
+</select>
+
+<select id="to">
+<option value="Asia/Kolkata">India (IST)</option>
+<option value="UTC">UTC</option>
+<option value="Europe/London">London</option>
+<option value="America/New_York">New York</option>
+<option value="Asia/Dubai">Dubai</option>
+<option value="Asia/Singapore">Singapore</option>
+</select>
+
+<button onclick="convert()">Convert</button>
+<div id="out">Choose date and time.</div>
+</div>
+
+<script>
+function convert(){
+ const value=document.getElementById('dt').value;
+ if(!value){out.textContent='Choose a date and time.';return}
+
+ const d=new Date(value+'Z');
+
+ out.textContent=new Intl.DateTimeFormat('en-IN',{
+   timeZone:document.getElementById('to').value,
+   dateStyle:'medium',
+   timeStyle:'medium'
+ }).format(d);
+}
+</script>
+</body>
+</html>

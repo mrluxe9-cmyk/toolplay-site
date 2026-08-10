@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Counter Pro | ToolPlay</title>
+<meta name="description" content="Count words, characters, sentences and paragraphs.">
+<style>body{font-family:Arial;background:#f5f7fb;padding:25px;color:#172033}.card{max-width:700px;margin:auto;background:white;padding:25px;border-radius:20px}textarea{width:100%;padding:14px;box-sizing:border-box;min-height:220px}#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;line-height:1.7}</style>
+</head><body><div class="card">
+<h1>📝 Word Counter Pro</h1><textarea id="text" placeholder="Type or paste text..."></textarea><div id="out">Words: 0</div>
+</div>
+<script>text.addEventListener('input',()=>{let s=text.value,w=s.trim()?s.trim().split(/\s+/).length:0,c=s.length,sen=(s.match(/[.!?]+/g)||[]).length,p=(s.match(/\n\s*\n/g)||[]).length+(s?1:0);out.innerHTML=`Words: ${w}<br>Characters: ${c}<br>Sentences: ${sen}<br>Paragraphs: ${p}`})</script>
+</body></html>
