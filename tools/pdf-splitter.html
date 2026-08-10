@@ -19,7 +19,16 @@ a.download{display:block;text-align:center;text-decoration:none;background:#1720
 </style>
 </head><body><main class="wrap"><section class="card"><h1>📄 PDF Splitter</h1><p class="sub">Select a PDF and choose the pages to put into a new PDF.</p><input id="file" type="file" accept="application/pdf"><input id="pages" inputmode="text" placeholder="Pages e.g. 1,3,5 or 2-4"><button id="go" disabled>Split PDF</button><div id="out" class="result">Select a PDF first.</div></section></main><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>
 const file=document.getElementById('file'),pages=document.getElementById('pages'),go=document.getElementById('go'),out=document.getElementById('out');
-file.onchange=()=>{go.disabled=!file.files.length; out.textContent=file.files.length?'Selected: '+file.files[0].name:'Select a PDF first.'};
+function updateState(){
+  const hasFile=file.files.length>0;
+  const hasPages=pages.value.trim().length>0;
+  go.disabled=!hasFile || !hasPages;
+  if(!hasFile) out.textContent='Select a PDF first.';
+  else if(!hasPages) out.textContent='Selected: '+file.files[0].name+'. Enter page numbers.';
+  else out.textContent='Selected: '+file.files[0].name+'. Pages: '+pages.value.trim();
+}
+file.onchange=updateState;
+pages.oninput=updateState;
 function parsePages(s,max){
  let set=new Set();
  for(const part of s.split(',').map(x=>x.trim()).filter(Boolean)){
