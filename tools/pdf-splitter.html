@@ -1,1 +1,45 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Splitter | ToolPlay</title><meta name="description" content="Extract selected pages from a PDF into a separate PDF."><style>body{font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033;margin:0;padding:25px}.card{max-width:720px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}input,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}input{border:1px solid #d6ddea}button{border:0;background:#6d35e8;color:#fff;font-weight:bold;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;line-height:1.7}.download{display:inline-block;margin:8px 8px 0 0;padding:10px 14px;border-radius:10px;background:#172033;color:#fff;text-decoration:none}.muted{color:#667085}</style></head><body><div class="card"><h1>PDF Splitter</h1><p class="muted">Extract selected pages from a PDF into a separate PDF.</p><input id="file" type="file" accept="application/pdf"><input id="pages" placeholder="Pages e.g. 1,3,5 or 2-4"><button id="btn" disabled>Extract Pages</button><div id="out">Select a PDF and page numbers.</div></div><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>const file=document.getElementById('file'),pages=document.getElementById('pages'),btn=document.getElementById('btn'),out=document.getElementById('out');function parsePages(s,max){const set=new Set();for(const part of s.split(',')){const x=part.trim();if(!x)continue;if(/^\d+-\d+$/.test(x)){let[a,b]=x.split('-').map(Number);if(a>b)[a,b]=[b,a];for(let i=a;i<=b;i++)if(i>=1&&i<=max)set.add(i)}else if(/^\d+$/.test(x)){const n=Number(x);if(n>=1&&n<=max)set.add(n)}}return [...set].sort((a,b)=>a-b)}file.addEventListener('change',()=>{btn.disabled=!file.files[0];out.textContent=file.files[0]?`Selected: ${file.files[0].name}`:'Select a PDF and page numbers.'});btn.addEventListener('click',async()=>{if(!file.files[0])return;try{const src=await PDFLib.PDFDocument.load(await file.files[0].arrayBuffer());const nums=parsePages(pages.value,src.getPageCount());if(!nums.length){out.textContent=`Enter valid page numbers from 1 to ${src.getPageCount()}.`;return}const dst=await PDFLib.PDFDocument.create();const copied=await dst.copyPages(src,nums.map(n=>n-1));copied.forEach(p=>dst.addPage(p));const bytes=await dst.save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));a.download='extracted-pages.pdf';a.className='download';a.textContent=`Download extracted PDF (${nums.length} page(s))`;out.innerHTML='Done. ';out.append(a)}catch(e){out.textContent='Extraction failed. Make sure the PDF is valid and not encrypted.'}});</script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Splitter | ToolPlay</title><meta name="description" content="Split a PDF by extracting selected pages in your browser.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:28px 14px}
+.card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 8px 28px #00000012}
+h1{font-size:clamp(34px,8vw,58px);line-height:1.08;margin:0 0 12px}
+.sub{color:#667085;font-size:18px;line-height:1.5;margin:0 0 22px}
+input,select,button{width:100%;padding:15px;border-radius:14px;font-size:17px}
+input,select{border:1px solid #d6ddea;background:#fff}
+input[type=file]{padding:12px}
+button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:800;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.65;font-weight:600;word-break:break-word}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+a.download{display:block;text-align:center;text-decoration:none;background:#172033;color:#fff;padding:14px;border-radius:12px;font-weight:800;margin-top:10px}
+.small{font-size:14px;color:#667085;font-weight:500}
+@media(max-width:600px){.row{grid-template-columns:1fr}.wrap{padding:18px 12px}.card{padding:22px}}
+</style>
+</head><body><main class="wrap"><section class="card"><h1>📄 PDF Splitter</h1><p class="sub">Select a PDF and choose the pages to put into a new PDF.</p><input id="file" type="file" accept="application/pdf"><input id="pages" inputmode="text" placeholder="Pages e.g. 1,3,5 or 2-4"><button id="go" disabled>Split PDF</button><div id="out" class="result">Select a PDF first.</div></section></main><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>
+const file=document.getElementById('file'),pages=document.getElementById('pages'),go=document.getElementById('go'),out=document.getElementById('out');
+file.onchange=()=>{go.disabled=!file.files.length; out.textContent=file.files.length?'Selected: '+file.files[0].name:'Select a PDF first.'};
+function parsePages(s,max){
+ let set=new Set();
+ for(const part of s.split(',').map(x=>x.trim()).filter(Boolean)){
+  if(/^\d+$/.test(part)) set.add(+part);
+  else if(/^(\d+)\s*-\s*(\d+)$/.test(part)){
+   let [,a,b]=part.match(/^(\d+)\s*-\s*(\d+)$/); a=+a;b=+b;
+   if(a>b)[a,b]=[b,a];
+   for(let i=a;i<=b;i++)set.add(i);
+  } else throw new Error('Invalid page range: '+part);
+ }
+ return [...set].sort((a,b)=>a-b).filter(n=>n>=1&&n<=max);
+}
+go.onclick=async()=>{try{
+ go.disabled=true; out.textContent='Processing…';
+ const src=await PDFLib.PDFDocument.load(await file.files[0].arrayBuffer());
+ const nums=parsePages(pages.value,src.getPageCount());
+ if(!nums.length)throw new Error('Enter at least one valid page number.');
+ const dst=await PDFLib.PDFDocument.create();
+ const copied=await dst.copyPages(src,nums.map(n=>n-1)); copied.forEach(p=>dst.addPage(p));
+ const bytes=await dst.save(); const blob=new Blob([bytes],{type:'application/pdf'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a'); a.className='download';a.href=url;a.download='split-pages.pdf';a.textContent='Download split PDF';out.replaceChildren(a);
+}catch(e){out.textContent='Error: '+e.message}finally{go.disabled=!file.files.length}};
+</script></body></html>

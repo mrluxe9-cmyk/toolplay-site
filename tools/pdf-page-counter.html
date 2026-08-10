@@ -1,1 +1,23 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Page Counter | ToolPlay</title><meta name="description" content="Count the exact number of pages in a PDF."><style>body{font-family:system-ui,Arial,sans-serif;background:#f5f7fb;color:#172033;margin:0;padding:25px}.card{max-width:720px;margin:auto;background:#fff;padding:25px;border-radius:20px;box-shadow:0 8px 25px #0001}input,button{width:100%;padding:14px;margin-top:12px;box-sizing:border-box;border-radius:12px}input{border:1px solid #d6ddea}button{border:0;background:#6d35e8;color:#fff;font-weight:bold;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}#out{margin-top:18px;padding:15px;background:#f0ebff;border-radius:12px;line-height:1.7}.download{display:inline-block;margin:8px 8px 0 0;padding:10px 14px;border-radius:10px;background:#172033;color:#fff;text-decoration:none}.muted{color:#667085}</style></head><body><div class="card"><h1>PDF Page Counter</h1><p class="muted">Count the exact number of pages in a PDF.</p><input id="file" type="file" accept="application/pdf"><div id="out">Select a PDF first.</div></div><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>const file=document.getElementById('file'),out=document.getElementById('out');file.addEventListener('change',async()=>{const f=file.files[0];if(!f){out.textContent='Select a PDF first.';return}try{const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());out.innerHTML=`File: <b>${f.name}</b><br>Size: ${(f.size/1024/1024).toFixed(2)} MB<br><strong>Pages: ${pdf.getPageCount()}</strong>`}catch(e){out.textContent='Could not read this PDF.'}});</script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Page Counter | ToolPlay</title><meta name="description" content="Count the pages and inspect basic information of a PDF.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:28px 14px}
+.card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 8px 28px #00000012}
+h1{font-size:clamp(34px,8vw,58px);line-height:1.08;margin:0 0 12px}
+.sub{color:#667085;font-size:18px;line-height:1.5;margin:0 0 22px}
+input,select,button{width:100%;padding:15px;border-radius:14px;font-size:17px}
+input,select{border:1px solid #d6ddea;background:#fff}
+input[type=file]{padding:12px}
+button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:800;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.65;font-weight:600;word-break:break-word}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+a.download{display:block;text-align:center;text-decoration:none;background:#172033;color:#fff;padding:14px;border-radius:12px;font-weight:800;margin-top:10px}
+.small{font-size:14px;color:#667085;font-weight:500}
+@media(max-width:600px){.row{grid-template-columns:1fr}.wrap{padding:18px 12px}.card{padding:22px}}
+</style>
+</head><body><main class="wrap"><section class="card"><h1>📄 PDF Page Counter</h1><p class="sub">Select a PDF to view its exact page count and file information.</p><input id="file" type="file" accept="application/pdf"><div id="out" class="result">Select a PDF first.</div></section></main><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>
+const file=document.getElementById('file'),out=document.getElementById('out');
+file.onchange=async()=>{const f=file.files[0];if(!f){out.textContent='Select a PDF first.';return}try{out.textContent='Reading PDF…';const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());out.innerHTML=`<b>${f.name}</b><br>Pages: ${pdf.getPageCount()}<br>Size: ${(f.size/1024/1024).toFixed(2)} MB`}catch(e){out.textContent='Error: Invalid or unreadable PDF.'}};
+</script></body></html>
