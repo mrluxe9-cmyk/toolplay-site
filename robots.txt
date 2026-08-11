@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrluxe9-cmyk.github.io/toolplay-site/sitemap.xml
