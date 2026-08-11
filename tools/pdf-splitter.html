@@ -1,361 +1,61 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PDF Splitter | ToolPlay</title>
-<meta name="description" content="Split a PDF by selecting pages in your browser.">
-
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Splitter | ToolPlay</title><meta name="description" content="Split a PDF by extracting selected pages in your browser.">
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:#f5f7fb;
-  color:#172033;
-}
-
-.wrap{
-  max-width:760px;
-  margin:auto;
-  padding:24px 14px;
-}
-
-.card{
-  background:#fff;
-  border-radius:24px;
-  padding:28px;
-  box-shadow:0 8px 28px #00000012;
-}
-
-h1{
-  font-size:clamp(34px,8vw,58px);
-  line-height:1.08;
-  margin:0 0 12px;
-}
-
-.sub{
-  color:#667085;
-  font-size:18px;
-  line-height:1.5;
-  margin:0 0 22px;
-}
-
-input{
-  width:100%;
-  padding:15px;
-  margin-top:12px;
-  border:1px solid #d6ddea;
-  border-radius:14px;
-  background:#fff;
-  font-size:17px;
-}
-
-input[type=file]{
-  padding:12px;
-}
-
-button{
-  width:100%;
-  min-height:56px;
-  margin-top:14px;
-  border:0;
-  border-radius:14px;
-  background:#2563eb;
-  color:#fff;
-  font-size:17px;
-  font-weight:800;
-  cursor:pointer;
-  display:block;
-  visibility:visible;
-}
-
-button:disabled{
-  background:#94a3b8;
-  color:#fff;
-  opacity:1;
-  cursor:not-allowed;
-}
-
-.result{
-  margin-top:18px;
-  padding:16px;
-  border-radius:14px;
-  background:#f0ebff;
-  line-height:1.65;
-  font-weight:600;
-  word-break:break-word;
-}
-
-.download{
-  display:block;
-  margin-top:12px;
-  padding:14px;
-  border-radius:12px;
-  background:#172033;
-  color:#fff;
-  text-align:center;
-  text-decoration:none;
-  font-weight:800;
-}
-
-@media(max-width:600px){
-  .wrap{padding:18px 12px}
-  .card{padding:22px}
-}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{max-width:760px;margin:auto;padding:28px 14px}
+.card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 8px 28px #00000012}
+h1{font-size:clamp(34px,8vw,58px);line-height:1.08;margin:0 0 12px}
+.sub{color:#667085;font-size:18px;line-height:1.5;margin:0 0 22px}
+input,select,button{width:100%;padding:15px;border-radius:14px;font-size:17px}
+input,select{border:1px solid #d6ddea;background:#fff}
+input[type=file]{padding:12px}
+button{margin-top:14px;border:0;background:#6d35e8;color:#fff;font-weight:800;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.result{margin-top:18px;padding:16px;border-radius:14px;background:#f0ebff;line-height:1.65;font-weight:600;word-break:break-word}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+a.download{display:block;text-align:center;text-decoration:none;background:#172033;color:#fff;padding:14px;border-radius:12px;font-weight:800;margin-top:10px}
+.small{font-size:14px;color:#667085;font-weight:500}
+@media(max-width:600px){.row{grid-template-columns:1fr}.wrap{padding:18px 12px}.card{padding:22px}}
 </style>
-</head>
-
-<body>
-
-<main class="wrap">
-<section class="card">
-
-<h1>📄 PDF Splitter</h1>
-
-<p class="sub">
-Select a PDF and choose the pages to create a new PDF.
-</p>
-
-<input
-  id="file"
-  type="file"
-  accept="application/pdf,.pdf"
->
-
-<input
-  id="pages"
-  type="text"
-  inputmode="text"
-  autocomplete="off"
-  placeholder="Pages e.g. 1,3,5 or 2-4"
->
-
-<button id="go" type="button">
-Split PDF
-</button>
-
-<div id="out" class="result">
-Select a PDF and enter page numbers.
-</div>
-
-</section>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-
-<script>
-(function(){
-
-const file = document.getElementById("file");
-const pages = document.getElementById("pages");
-const go = document.getElementById("go");
-const out = document.getElementById("out");
-
-function status(text){
-  out.textContent = text;
-}
-
-function parsePages(value,total){
-
-  const result = new Set();
-
-  const parts = value
-    .split(",")
-    .map(x => x.trim())
-    .filter(Boolean);
-
-  if(!parts.length){
-    throw new Error("Enter page numbers.");
-  }
+</head><body><main class="wrap"><section class="card"><h1>📄 PDF Splitter</h1><p class="sub">Select a PDF and choose the pages to put into a new PDF.</p><input id="file" type="file" accept="application/pdf"><input id="pages" inputmode="text" placeholder="Pages e.g. 1,3,5 or 2-4"><button id="go" disabled>Split PDF</button><div id="out" class="result">Select a PDF first.</div></section></main><script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script><script>
+const file=document.getElementById('file'),pages=document.getElementById('pages'),go=document.getElementById('go'),out=document.getElementById('out');
+file.onchange=()=>{go.disabled=!file.files.length; out.textContent=file.files.length?'Selected: '+file.files[0].name:'Select a PDF first.'};
+function parsePages(s,max){
+  const set=new Set();
+  const parts=String(s||'').split(',').map(x=>x.trim()).filter(Boolean);
+  if(!parts.length)throw new Error('Enter at least one page number or range.');
 
   for(const part of parts){
-
-    if(/^\d+$/.test(part)){
-
-      const n = Number(part);
-
-      if(n < 1 || n > total){
-        throw new Error(
-          "Page " + n + " is outside this PDF. Total pages: " + total
-        );
-      }
-
-      result.add(n);
+    let match=part.match(/^(\d+)$/);
+    if(match){
+      const n=Number(match[1]);
+      if(n<1||n>max)throw new Error('Page '+n+' is outside this PDF. Total pages: '+max);
+      set.add(n);
       continue;
     }
 
-    const range = part.match(/^(\d+)\s*-\s*(\d+)$/);
-
-    if(range){
-
-      let a = Number(range[1]);
-      let b = Number(range[2]);
-
-      if(a > b){
-        [a,b] = [b,a];
-      }
-
-      if(a < 1 || b > total){
-        throw new Error(
-          "Range " + part +
-          " is outside this PDF. Total pages: " + total
-        );
-      }
-
-      for(let n=a;n<=b;n++){
-        result.add(n);
-      }
-
+    match=part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if(match){
+      let a=Number(match[1]),b=Number(match[2]);
+      if(a>b)[a,b]=[b,a];
+      if(a<1||b>max)throw new Error('Range '+part+' is outside this PDF. Total pages: '+max);
+      for(let i=a;i<=b;i++)set.add(i);
       continue;
     }
 
-    throw new Error("Invalid page format: " + part);
+    throw new Error('Invalid page format: '+part);
   }
-
-  return [...result].sort((a,b)=>a-b);
+  return [...set].sort((a,b)=>a-b);
 }
-
-file.addEventListener("change",function(){
-
-  if(file.files.length){
-
-    status(
-      "Selected: " +
-      file.files[0].name +
-      ". Enter page numbers."
-    );
-
-  }else{
-
-    status("Select a PDF first.");
-
-  }
-
-});
-
-pages.addEventListener("input",function(){
-
-  if(file.files.length && pages.value.trim()){
-
-    status(
-      "Selected: " +
-      file.files[0].name +
-      ". Pages: " +
-      pages.value.trim()
-    );
-
-  }
-
-});
-
-go.addEventListener("click",async function(){
-
-  if(!file.files.length){
-
-    status("Please select a PDF first.");
-    return;
-
-  }
-
-  if(!pages.value.trim()){
-
-    status(
-      "Please enter pages, for example 1,3,5 or 2-4."
-    );
-    return;
-
-  }
-
-  if(typeof PDFLib === "undefined"){
-
-    status(
-      "PDF engine failed to load. Refresh the page and try again."
-    );
-    return;
-
-  }
-
-  go.disabled = true;
-  status("Processing PDF...");
-
-  try{
-
-    const source = file.files[0];
-
-    const bytes =
-      await source.arrayBuffer();
-
-    const pdf =
-      await PDFLib.PDFDocument.load(bytes);
-
-    const total =
-      pdf.getPageCount();
-
-    const selected =
-      parsePages(pages.value,total);
-
-    const output =
-      await PDFLib.PDFDocument.create();
-
-    const copied =
-      await output.copyPages(
-        pdf,
-        selected.map(n=>n-1)
-      );
-
-    copied.forEach(page=>{
-      output.addPage(page);
-    });
-
-    const result =
-      await output.save();
-
-    const blob =
-      new Blob(
-        [result],
-        {type:"application/pdf"}
-      );
-
-    const url =
-      URL.createObjectURL(blob);
-
-    const link =
-      document.createElement("a");
-
-    link.href = url;
-    link.download = "split-pages.pdf";
-    link.className = "download";
-    link.textContent = "⬇ Download split PDF";
-
-    out.innerHTML =
-      "Created " +
-      selected.length +
-      " page(s).";
-
-    out.appendChild(link);
-
-  }catch(error){
-
-    console.error(error);
-
-    status(
-      "Error: " +
-      (error.message || "Could not split PDF.")
-    );
-
-  }finally{
-
-    go.disabled = false;
-
-  }
-
-});
-
-})();
-</script>
-
-</body>
-</html>
+go.onclick=async()=>{try{
+ if(typeof PDFLib==='undefined')throw new Error('PDF engine failed to load. Refresh the page and try again.');
+ go.disabled=true; out.textContent='Processing…';
+ const src=await PDFLib.PDFDocument.load(await file.files[0].arrayBuffer());
+ const nums=parsePages(pages.value,src.getPageCount());
+ if(!nums.length)throw new Error('Enter at least one valid page number.');
+ const dst=await PDFLib.PDFDocument.create();
+ const copied=await dst.copyPages(src,nums.map(n=>n-1)); copied.forEach(p=>dst.addPage(p));
+ const bytes=await dst.save(); const blob=new Blob([bytes],{type:'application/pdf'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a'); a.className='download';a.href=url;a.download='split-pages.pdf';a.textContent='Download split PDF';out.replaceChildren(a);
+}catch(e){out.textContent='Error: '+e.message}finally{go.disabled=!file.files.length}};
+</script></body></html>

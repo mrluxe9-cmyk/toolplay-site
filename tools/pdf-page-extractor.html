@@ -21,18 +21,34 @@ a.download{display:block;text-align:center;text-decoration:none;background:#1720
 const file=document.getElementById('file'),pages=document.getElementById('pages'),go=document.getElementById('go'),out=document.getElementById('out');
 file.onchange=()=>{go.disabled=!file.files.length; out.textContent=file.files.length?'Selected: '+file.files[0].name:'Select a PDF first.'};
 function parsePages(s,max){
- let set=new Set();
- for(const part of s.split(',').map(x=>x.trim()).filter(Boolean)){
-  if(/^\d+$/.test(part)) set.add(+part);
-  else if(/^(\d+)\s*-\s*(\d+)$/.test(part)){
-   let [,a,b]=part.match(/^(\d+)\s*-\s*(\d+)$/); a=+a;b=+b;
-   if(a>b)[a,b]=[b,a];
-   for(let i=a;i<=b;i++)set.add(i);
-  } else throw new Error('Invalid page range: '+part);
- }
- return [...set].sort((a,b)=>a-b).filter(n=>n>=1&&n<=max);
+  const set=new Set();
+  const parts=String(s||'').split(',').map(x=>x.trim()).filter(Boolean);
+  if(!parts.length)throw new Error('Enter at least one page number or range.');
+
+  for(const part of parts){
+    let match=part.match(/^(\d+)$/);
+    if(match){
+      const n=Number(match[1]);
+      if(n<1||n>max)throw new Error('Page '+n+' is outside this PDF. Total pages: '+max);
+      set.add(n);
+      continue;
+    }
+
+    match=part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if(match){
+      let a=Number(match[1]),b=Number(match[2]);
+      if(a>b)[a,b]=[b,a];
+      if(a<1||b>max)throw new Error('Range '+part+' is outside this PDF. Total pages: '+max);
+      for(let i=a;i<=b;i++)set.add(i);
+      continue;
+    }
+
+    throw new Error('Invalid page format: '+part);
+  }
+  return [...set].sort((a,b)=>a-b);
 }
 go.onclick=async()=>{try{
+ if(typeof PDFLib==='undefined')throw new Error('PDF engine failed to load. Refresh the page and try again.');
  go.disabled=true; out.textContent='Processing…';
  const src=await PDFLib.PDFDocument.load(await file.files[0].arrayBuffer());
  const nums=parsePages(pages.value,src.getPageCount());

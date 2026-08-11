@@ -21,6 +21,7 @@ a.download{display:block;text-align:center;text-decoration:none;background:#1720
 const filesEl=document.getElementById('files'),go=document.getElementById('go'),out=document.getElementById('out');
 filesEl.onchange=()=>{go.disabled=filesEl.files.length<2;out.textContent=filesEl.files.length?`Selected ${filesEl.files.length} PDF file(s).`:'Select at least 2 PDF files.'};
 go.onclick=async()=>{try{
+ if(typeof PDFLib==='undefined')throw new Error('PDF engine failed to load. Refresh the page and try again.');
  go.disabled=true;out.textContent='Merging…';const dst=await PDFLib.PDFDocument.create();
  for(const f of filesEl.files){const src=await PDFLib.PDFDocument.load(await f.arrayBuffer());const ps=await dst.copyPages(src,src.getPageIndices());ps.forEach(p=>dst.addPage(p));}
  const bytes=await dst.save(),url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'})),a=document.createElement('a');

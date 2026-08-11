@@ -18,7 +18,63 @@ a.download{display:block;text-align:center;text-decoration:none;background:#1720
 @media(max-width:600px){.row{grid-template-columns:1fr}.wrap{padding:18px 12px}.card{padding:22px}}
 </style>
 </head><body><main class="wrap"><section class="card"><h1>🖼️ Image Converter</h1><p class="sub">Convert an image to JPG, PNG or WebP locally in your browser.</p><input id="file" type="file" accept="image/*"><select id="format"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WebP</option></select><button id="go" disabled>Convert</button><div id="out" class="result">Select an image.</div></section></main><script>
-const file=document.getElementById('file'),format=document.getElementById('format'),go=document.getElementById('go'),out=document.getElementById('out');
-file.onchange=()=>{go.disabled=!file.files.length;out.textContent=file.files.length?'Selected: '+file.files[0].name:'Select an image.'};
-go.onclick=()=>{const f=file.files[0];if(!f)return;go.disabled=true;out.textContent='Converting…';const im=new Image(),u=URL.createObjectURL(f);im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);c.toBlob(b=>{if(!b){out.textContent='Conversion failed.';go.disabled=false;return}const ext=format.value==='image/png'?'png':format.value==='image/webp'?'webp':'jpg',url=URL.createObjectURL(b),a=document.createElement('a');a.className='download';a.href=url;a.download='converted.'+ext;a.textContent='Download converted image';out.replaceChildren(a);go.disabled=false},format.value,.92);URL.revokeObjectURL(u)};im.onerror=()=>{out.textContent='Could not read image.';go.disabled=false};im.src=u};
+const file=document.getElementById('file'),format=document.getElementById('format'),
+go=document.getElementById('go'),out=document.getElementById('out');
+
+file.addEventListener('change',()=>{
+  const ok=file.files.length>0;
+  go.disabled=!ok;
+  out.textContent=ok?'Selected: '+file.files[0].name:'Select an image.';
+});
+
+go.addEventListener('click',()=>{
+  const f=file.files[0];
+  if(!f)return;
+  go.disabled=true;
+  out.textContent='Converting…';
+  const im=new Image();
+  const u=URL.createObjectURL(f);
+
+  im.onload=()=>{
+    try{
+      const c=document.createElement('canvas');
+      c.width=im.naturalWidth;
+      c.height=im.naturalHeight;
+      const ctx=c.getContext('2d');
+      if(!ctx)throw new Error('Canvas is not supported.');
+      ctx.drawImage(im,0,0);
+
+      const mime=format.value;
+      const ext=mime==='image/png'?'png':mime==='image/webp'?'webp':'jpg';
+
+      c.toBlob(b=>{
+        URL.revokeObjectURL(u);
+        if(!b){
+          out.textContent='Conversion failed.';
+          go.disabled=false;
+          return;
+        }
+        const url=URL.createObjectURL(b);
+        const a=document.createElement('a');
+        a.className='download';
+        a.href=url;
+        a.download='converted.'+ext;
+        a.textContent='Download converted image';
+        out.replaceChildren(a);
+        go.disabled=false;
+      },mime,mime==='image/png'?undefined:.92);
+    }catch(e){
+      URL.revokeObjectURL(u);
+      out.textContent='Error: '+e.message;
+      go.disabled=false;
+    }
+  };
+
+  im.onerror=()=>{
+    URL.revokeObjectURL(u);
+    out.textContent='Could not read image.';
+    go.disabled=false;
+  };
+  im.src=u;
+});
 </script></body></html>
