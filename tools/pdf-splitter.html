@@ -173,7 +173,7 @@ function parsePages(value,total){
 
   for(const part of parts){
 
-    if(/^\\d+$/.test(part)){
+    if(/^\d+$/.test(part)){
 
       const n = Number(part);
 
@@ -187,7 +187,7 @@ function parsePages(value,total){
       continue;
     }
 
-    const range = part.match(/^(\\d+)\\s*-\\s*(\\d+)$/);
+    const range = part.match(/^(\d+)\s*-\s*(\d+)$/);
 
     if(range){
 
