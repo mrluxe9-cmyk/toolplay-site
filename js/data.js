@@ -213,16 +213,6 @@ const TOOLPLAY_ITEMS = [
     "keywords": "json formatter beautifier"
   },
   {
-    "id": "pdf-page-counter",
-    "type": "tool",
-    "category": "PDF Tools",
-    "title": "PDF Page Counter",
-    "desc": "Inspect PDF file information and page count workflow.",
-    "icon": "📄",
-    "url": "tools/pdf-page-counter.html",
-    "keywords": "pdf page counter pages"
-  },
-  {
     "id": "pdf-to-text",
     "type": "tool",
     "category": "PDF Tools",
@@ -343,26 +333,6 @@ const TOOLPLAY_ITEMS = [
     "keywords": "pdf compressor reduce pdf size"
   },
   {
-    "id": "pdf-merger",
-    "type": "tool",
-    "category": "PDF Tools",
-    "title": "PDF Merger",
-    "desc": "Merge multiple PDF files into one PDF.",
-    "icon": "📑",
-    "url": "tools/pdf-merger.html",
-    "keywords": "pdf merger combine pdf"
-  },
-  {
-    "id": "pdf-splitter",
-    "type": "tool",
-    "category": "PDF Tools",
-    "title": "PDF Splitter",
-    "desc": "Split a PDF into separate pages or files.",
-    "icon": "✂️",
-    "url": "tools/pdf-splitter.html",
-    "keywords": "pdf splitter split pages"
-  },
-  {
     "id": "pdf-to-jpg",
     "type": "tool",
     "category": "PDF Tools",
@@ -473,26 +443,6 @@ const TOOLPLAY_ITEMS = [
     "keywords": "image resize photo resize"
   },
   {
-    "id": "image-cropper",
-    "type": "tool",
-    "category": "Image Tools",
-    "title": "Image Cropper",
-    "desc": "Crop images easily.",
-    "icon": "CROP",
-    "url": "tools/image-cropper.html",
-    "keywords": "image crop photo crop"
-  },
-  {
-    "id": "image-compressor",
-    "type": "tool",
-    "category": "Image Tools",
-    "title": "Image Compressor",
-    "desc": "Compress images and reduce file size.",
-    "icon": "COMP",
-    "url": "tools/image-compressor.html",
-    "keywords": "image compressor photo compression"
-  },
-  {
     "id": "json-validator",
     "type": "tool",
     "category": "Developer Tools",
@@ -501,26 +451,6 @@ const TOOLPLAY_ITEMS = [
     "icon": "JSON",
     "url": "tools/json-validator.html",
     "keywords": "json validator validate"
-  },
-  {
-    "id": "image-converter",
-    "type": "tool",
-    "category": "Image Tools",
-    "title": "Image Converter",
-    "desc": "Convert images to JPG, PNG or WebP.",
-    "icon": "IMG",
-    "url": "tools/image-converter.html",
-    "keywords": "image converter jpg png webp"
-  },
-  {
-    "id": "pdf-page-extractor",
-    "type": "tool",
-    "category": "PDF Tools",
-    "title": "PDF Page Extractor",
-    "desc": "Select pages from a PDF for extraction.",
-    "icon": "PDF",
-    "url": "tools/pdf-page-extractor.html",
-    "keywords": "pdf page extractor pages"
   },
   {
     "id": "word-counter-pro",
