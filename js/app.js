@@ -1,10 +1,15 @@
 /* ToolPlay core app.js — no dependencies, no build step. */
 
-/* ---------------- PWA: service worker registration ---------------- */
+/* ---------------- PWA cleanup ---------------- */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    const swRoot = window.TP_ROOT || '';
-    navigator.serviceWorker.register(swRoot + 'service-worker.js', { scope: swRoot || './' }).catch(() => {});
+  window.addEventListener('load', async () => {
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const reg of regs) await reg.unregister();
+
+      const keys = await caches.keys();
+      await Promise.all(keys.map(key => caches.delete(key)));
+    } catch (e) {}
   });
 }
 
