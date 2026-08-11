@@ -65,8 +65,9 @@ function tpGetRecents(){
 
 /* ---------------- URL helper ---------------- */
 function tpUrl(path){
+  const clean = String(path || '').replace(/^\/+/, '');
   const root = window.TP_ROOT || '';
-  return root + String(path || '').replace(/^\/+/, '');
+  return new URL(clean, new URL(root || './', document.baseURI)).href;
 }
 
 /* ---------------- Card rendering ---------------- */
